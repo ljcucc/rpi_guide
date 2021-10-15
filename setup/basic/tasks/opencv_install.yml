@@ -1,0 +1,22 @@
+- name: Download opencv.zip
+  get_url: 
+    url: https://github.com/opencv/opencv/archive/4.0.0.zip
+    dest: ~/opencv.zip
+
+- name: Download opencv_contrib
+  get_url: 
+    url: https://github.com/opencv/opencv_contrib/archive/4.0.0.zip
+    dest: ~/opencv_contrib.zip
+
+- name: Unzip opencv.zip
+  ansible.builtin.unarchive:
+    src: ~/opencv.zip
+    dest: ~/
+    remote_src: true
+
+- name: Unzip opencv_contrib.zip
+  ansible.builtin.unarchive:
+    src: ~/opencv_contrib.zip
+    dest: ~/
+    remote_src: true
+

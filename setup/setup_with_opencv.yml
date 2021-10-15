@@ -1,0 +1,11 @@
+- hosts: all
+  become: yes
+  become_user: root
+  roles: 
+    - { role: basic, tags: basic}
+
+  tasks:
+  - name: Done~
+    debug:
+      msg:
+        - "Your Raspberry pi is ready to go!"

@@ -1,0 +1,49 @@
+- name: Init CMake dir
+  file:
+    path: ~/opencv-4.0.0/build
+    state: directory
+    
+- name: CMake files
+  become: yes
+  become_user: root
+  shell:
+    chdir: ~/opencv-4.0.0/build
+    cmd: cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-4.0.0/modules -D ENABLE_NEON=ON -D ENABLE_VFPV3=ON -D BUILD_TESTS=OFF -D OPENCV_ENABLE_NONFREE=ON -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF ..
+
+- name: stop swap usage
+  command: dphys-swapfile swapoff
+  become: yes
+  become_user: root
+
+- name: change swap size to cmake and compile opencv
+  become: yes
+  become_user: root
+  ansible.builtin.lineinfile:
+    path: /etc/dphys-swapfile
+    search_string: CONF_SWAPSIZE 
+    line: CONF_SWAPSIZE=2048
+
+- command: dphys-swapfile setup
+  become: yes
+  become_user: root
+
+- name: restart swap usage
+  command: dphys-swapfile swapon
+  become: yes
+  become_user: root
+
+- name: Compile OpenCV 4
+  become: yes
+  become_user: root
+  shell:
+    chdir: ~/opencv-4.0.0/build
+    cmd: make -j4
+
+- name: Make install
+  become: yes
+  become_user: root
+  command:
+    chdir: ~/opencv-4.0.0/build
+    argv:
+      - make install
+      - ldconfig

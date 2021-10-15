@@ -1,0 +1,37 @@
+---
+
+- name: Install required packages
+  apt: 
+    name:
+      - curl
+      - wget
+      - git
+      - tar
+      - vim
+      - build-essential
+      - cmake
+      - unzip
+      - pkg-config
+      - python3-pip
+
+- name: Install OpenCV required packages
+  apt:
+    name:
+      - libjpeg-dev
+      - libpng-dev 
+      - libtiff-dev
+      - libavcodec-dev 
+      - libavformat-dev 
+      - libswscale-dev 
+      - libv4l-dev
+      - libxvidcore-dev 
+      - libx264-dev
+      - libgtk-3-dev
+      - libcanberra-gtk*
+      - libatlas-base-dev
+      - gfortran
+      - python3-dev
+
+# - import_tasks: opencv_install.yml
+# - import_tasks: opencv_config.yml
+- import_tasks: opencv_compile.yml
